@@ -1,12 +1,14 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API developed in program Explorer Rockeseat",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Kennedy Dos Santos Ferreira",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
