@@ -8,7 +8,7 @@ async function sqliteConnection() {
     driver: sqlite3.Database,
   });
 
-  return database
+  return database;
 }
 
-module.exports = sqliteConnection
+module.exports = sqliteConnection;
