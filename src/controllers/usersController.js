@@ -1,7 +1,7 @@
 const AppError = require("../utils/appError");
 const sqliteConnection = require("../database/sqlite");
 const { hash } = require("bcryptjs");
-const { use } = require("../routes");
+
 
 class UserController {
   async create(req, res) {
@@ -13,7 +13,7 @@ class UserController {
     );
 
     if (checkUserExist) {
-      throw new AppError("Este email ja exist");
+      throw new AppError("Este email ja existe");
     }
 
     const hashedPassword = await hash(password, 8);
@@ -42,23 +42,26 @@ class UserController {
       [email]
     );
 
-    if (userWithUpdateEmail && userWithUpdateEmail.id !== id) {
+    if (userWithUpdateEmail && userWithUpdateEmail.id !== user.id) {
       throw new AppError("este email ja esta em uso");
     }
 
     user.name = name;
     user.email = email;
-    await database.run(` 
+    await database.run(
+      ` 
       UPDATE users SET 
       name = ?,
       email = ?,
-      updated_at = ?,
-      id = ?`,
-    [user.name, user.email, new Date(), id] );
+      updated_at = ?
+      WHERE id = ?`,
+      [user.name, user.email, new Date(), id]
+    );
 
-    return res.status(200).json()
-
+    return res.json();
   }
+
+  
 }
 
 module.exports = UserController;
