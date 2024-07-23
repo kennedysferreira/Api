@@ -5,7 +5,11 @@ class NotesController {
     const { title, description, tags, links } = req.body;
     const { user_id } = req.params;
 
-    const note_id = await knex("notes").insert({ title, description, user_id });
+    const [note_id] = await knex("notes").insert({
+      title,
+      description,
+      user_id,
+    });
 
     const linksInsert = links.map((link) => {
       return { url: link, note_id };
@@ -21,6 +25,23 @@ class NotesController {
 
     res.json({ message: "Note created successfully" });
   }
+
+  async show(req, res) {
+    const { id } = req.params;
+    const note = await knex("notes").where({ id }).first();
+    const tags = await knex("tags").where({ note_id: id }).orderBy("name");
+    const links = await knex("links")
+      .where({ note_id: id })
+      .orderBy("created_at");
+
+    return res.json({ note, tags, links });
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+    await knex("notes").where({ id }).delete();
+    return res.json({ message: "Note deleted successfully" });
+  }
 }
 
-module.exports = { NotesController };
+module.exports = NotesController;
