@@ -4,8 +4,6 @@ const routes = require("./routes");
 const AppError = require('./utils/appError');
 const migrationRun = require('./database/sqlite/migrations');
 
-
-
 const app = express();
 app.use(express.json())
 
