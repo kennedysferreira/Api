@@ -57,7 +57,7 @@ class UserController {
       if (!checkOldPassword) {
         throw new AppError("Senha antiga esta incorreta");
       }
-      user.password = await hash(password, 8)
+      user.password = await hash(password, 8);
     }
 
     await database.run(

@@ -42,6 +42,24 @@ class NotesController {
     await knex("notes").where({ id }).delete();
     return res.json({ message: "Note deleted successfully" });
   }
+
+  async index(req, res) {
+    const { user_id, title } = req.query;
+
+    let notes;
+
+    if (tags) {
+      const filterTags = tags.split(",").map((tag) => tag.trim());
+      notes = await knex("tags").whereIn("name", filterTags);
+      return res.json(notes);
+    }
+
+    notes = await knex("notes")
+      .where({ user_id })
+      .whereLike("title", `%${title}%`)
+      .orderBy("title");
+    return res.json(notes);
+  }
 }
 
 module.exports = NotesController;
